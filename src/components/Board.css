@@ -1,0 +1,130 @@
+.board {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 600px;
+    aspect-ratio: 1;
+    position: relative;
+    user-select: none;
+    border: 5px solid #333;
+    border-radius: 4px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.board-row {
+    display: flex;
+    flex: 1;
+    width: 100%;
+}
+
+.square {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+}
+
+.square-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+}
+
+.square-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.square-overlay.selected {
+    background-color: var(--highlight);
+}
+
+.square-overlay.last-move {
+    background-color: rgba(255, 255, 0, 0.2);
+}
+
+.possible-move {
+    position: absolute;
+    width: 30%;
+    height: 30%;
+    border-radius: 50%;
+    background-color: var(--possible-move);
+    z-index: 3;
+    pointer-events: none;
+}
+
+.possible-move.capture {
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    background: transparent;
+    border: 4px solid var(--possible-capture);
+    box-sizing: border-box;
+    border-radius: 50%;
+}
+
+.check-indicator {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(255, 0, 0, 0.8) 0%, transparent 70%);
+    z-index: 1;
+}
+
+/* Coordinates */
+.coords {
+    position: absolute;
+    pointer-events: none;
+    font-size: 0.7rem;
+    font-weight: bold;
+    color: #333;
+    /* Default for light squares, might need adjustment */
+    z-index: 4;
+}
+
+.coords.files {
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    padding-bottom: 2px;
+}
+
+.coords.files span {
+    flex: 1;
+    text-align: right;
+    padding-right: 4px;
+    color: inherit;
+}
+
+/* Adjust colors based on square color - tricky with CSS only without passing props to coords. 
+   Instead, we can put coords inside squares or just use a fixed color that works on both or text-shadow.
+*/
+.coords span {
+    text-shadow: 0 0 2px rgba(255, 255, 255, 0.8);
+}
+
+.coords.ranks {
+    top: 0;
+    left: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding-left: 2px;
+}
+
+.coords.ranks span {
+    flex: 1;
+    display: flex;
+    align-items: flex-start;
+    padding-top: 2px;
+}
