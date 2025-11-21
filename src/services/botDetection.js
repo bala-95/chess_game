@@ -16,6 +16,12 @@ class BotDetectionService {
     }
 
     async analyze() {
+        // Skip bot detection on localhost for development
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            console.log('Bot detection disabled on localhost');
+            return { isSuspicious: false, confidence: 0, reasoning: 'localhost-dev-mode', source: 'local-dev-mode' };
+        }
+
         const timeSinceStart = Date.now() - this.startTime;
 
         try {
