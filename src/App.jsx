@@ -19,6 +19,7 @@ function App() {
   const [history, setHistory] = useState([]);
   const [gameMode, setGameMode] = useState('PvP'); // 'PvP' or 'PvAI'
   const [aiColor] = useState('b'); // AI plays Black by default
+  const [aiDifficulty, setAiDifficulty] = useState('medium'); // 'easy', 'medium', 'hard'
   const [seed, setSeedState] = useState(123456789);
   const [showSignup, setShowSignup] = useState(false);
   const [statsKey, setStatsKey] = useState(0); // Force stats refresh
@@ -80,14 +81,14 @@ function App() {
   useEffect(() => {
     if (gameMode === 'PvAI' && game.turn() === aiColor && !game.isGameOver()) {
       const timeoutId = setTimeout(() => {
-        const aiMove = getBestMove(game);
+        const aiMove = getBestMove(game, aiDifficulty);
         if (aiMove) {
           makeMove(aiMove);
         }
       }, 500); // Small delay for realism
       return () => clearTimeout(timeoutId);
     }
-  }, [game, gameMode, aiColor, makeMove]);
+  }, [game, gameMode, aiColor, aiDifficulty, makeMove]);
 
   const onSquareClick = (square) => {
     // If a square is already selected
@@ -219,15 +220,40 @@ function App() {
                 <LogOut size={20} /> Sign Out
               </button>
               {gameMode === 'PvAI' && (
-                <div className="seed-control">
-                  <Hash size={16} />
-                  <input
-                    type="number"
-                    value={seed}
-                    onChange={handleSeedChange}
-                    title="AI Random Seed"
-                  />
-                </div>
+                <>
+                  <div className="difficulty-selector">
+                    <label>AI Difficulty:</label>
+                    <div className="difficulty-buttons">
+                      <button
+                        onClick={() => setAiDifficulty('easy')}
+                        className={aiDifficulty === 'easy' ? 'active-difficulty' : ''}
+                      >
+                        Easy
+                      </button>
+                      <button
+                        onClick={() => setAiDifficulty('medium')}
+                        className={aiDifficulty === 'medium' ? 'active-difficulty' : ''}
+                      >
+                        Medium
+                      </button>
+                      <button
+                        onClick={() => setAiDifficulty('hard')}
+                        className={aiDifficulty === 'hard' ? 'active-difficulty' : ''}
+                      >
+                        Hard
+                      </button>
+                    </div>
+                  </div>
+                  <div className="seed-control">
+                    <Hash size={16} />
+                    <input
+                      type="number"
+                      value={seed}
+                      onChange={handleSeedChange}
+                      title="AI Random Seed"
+                    />
+                  </div>
+                </>
               )}
             </div>
           </div>
