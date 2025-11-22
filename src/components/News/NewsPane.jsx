@@ -90,11 +90,18 @@ export function NewsPane({ isOpen, onClose }) {
                             <div className="news-list">
                                 {newsItems.map(item => (
                                     <div key={item.id} className="news-item">
-                                        <h3>{item.title}</h3>
-                                        <p>{item.summary}</p>
+                                        <a
+                                            href={item.url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="news-title"
+                                        >
+                                            {item.title}
+                                        </a>
+                                        <p className="news-summary">{item.summary}</p>
                                         <div className="news-meta">
-                                            <span>{item.source}</span>
-                                            <span>{item.date}</span>
+                                            <span className="news-source">{item.source}</span>
+                                            <span className="news-date">{item.date}</span>
                                         </div>
                                     </div>
                                 ))}

@@ -99,6 +99,21 @@
     color: #e0e0e0;
 }
 
+.news-title {
+    display: block;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #e0e0e0;
+    margin-bottom: 8px;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.news-title:hover {
+    color: #4a9eff;
+    text-decoration: underline;
+}
+
 .news-item p {
     margin: 0 0 10px 0;
     font-size: 0.9rem;
