@@ -60,15 +60,23 @@ app.get('/api/news', async (req, res) => {
         const TOPIC_QUERIES = {
             general: 'chess OR "chess game" OR grandmaster',
             tournaments: 'chess tournament OR "chess championship" OR FIDE',
-            strategy: 'chess strategy OR "chess opening" OR "chess tactics" OR "chess endgame"'
+            strategy: 'chess strategy OR "chess opening" OR "chess tactics" OR "chess endgame"',
+            openings: 'chess openings OR "chess theory" OR "opening preparation"',
+            grandmasters: 'chess grandmaster OR "GM" OR "super GM"',
+            'world-championship': 'world chess championship OR "FIDE world championship"'
         };
 
-        const query = TOPIC_QUERIES[topic.toLowerCase()] || TOPIC_QUERIES.general;
+        // Use predefined query if it exists, otherwise use the topic directly as a search term
+        const query = TOPIC_QUERIES[topic.toLowerCase()] || `chess ${topic}`;
+
+        console.log(`News API Query for topic "${topic}": "${query}"`);
 
         // Get articles from the last 30 days
         const thirtyDaysAgo = new Date();
         thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
         const fromDate = thirtyDaysAgo.toISOString().split('T')[0];
+
+        console.log(`Date range: from ${fromDate} to today`);
 
         const newsApiKey = process.env.NEWS_API_KEY || '4e4cd13134ac4c17b9229352da68b284';
         const url = `https://newsapi.org/v2/everything?q=${encodeURIComponent(query)}&from=${fromDate}&sortBy=relevancy&pageSize=10&apiKey=${newsApiKey}`;

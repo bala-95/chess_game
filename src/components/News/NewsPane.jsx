@@ -6,6 +6,8 @@ import './NewsPane.css';
 export function NewsPane({ isOpen, onClose }) {
     const [activeTab, setActiveTab] = useState('news'); // 'news' or 'search'
     const [newsTopic, setNewsTopic] = useState('general');
+    const [customSearch, setCustomSearch] = useState('');
+    const [debouncedSearch, setDebouncedSearch] = useState('');
     const [newsItems, setNewsItems] = useState([]);
     const [loadingNews, setLoadingNews] = useState(false);
 
@@ -13,21 +15,44 @@ export function NewsPane({ isOpen, onClose }) {
     const [searchResult, setSearchResult] = useState(null);
     const [isSearching, setIsSearching] = useState(false);
 
+    // Debounce custom search input
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            setDebouncedSearch(customSearch);
+        }, 500); // Wait 500ms after user stops typing
+
+        return () => clearTimeout(timer);
+    }, [customSearch]);
+
     useEffect(() => {
         if (isOpen && activeTab === 'news') {
             loadNews();
         }
-    }, [isOpen, activeTab, newsTopic]);
+    }, [isOpen, activeTab, newsTopic, debouncedSearch]);
 
     const loadNews = async () => {
         setLoadingNews(true);
         try {
-            const items = await getNewsByTopic(newsTopic);
+            // Use custom search if provided, otherwise use topic
+            const query = debouncedSearch.trim() || newsTopic;
+            const items = await getNewsByTopic(query);
             setNewsItems(items);
         } catch (error) {
             console.error('Failed to load news', error);
         } finally {
             setLoadingNews(false);
+        }
+    };
+
+    const handleTopicChange = (topic) => {
+        setNewsTopic(topic);
+        setCustomSearch(''); // Clear custom search when topic is selected
+    };
+
+    const handleSearchChange = (value) => {
+        setCustomSearch(value);
+        if (value.trim()) {
+            setNewsTopic(''); // Clear topic when user starts typing
         }
     };
 
@@ -76,12 +101,33 @@ export function NewsPane({ isOpen, onClose }) {
             <div className="news-pane-content">
                 {activeTab === 'news' && (
                     <div className="news-section">
-                        <div className="topic-selector">
-                            <select value={newsTopic} onChange={(e) => setNewsTopic(e.target.value)}>
-                                <option value="general">General News</option>
-                                <option value="tournaments">Tournaments</option>
-                                <option value="strategy">Strategy</option>
-                            </select>
+                        <div className="news-controls">
+                            <div className="topic-selector">
+                                <label>Quick Topics:</label>
+                                <select value={newsTopic} onChange={(e) => handleTopicChange(e.target.value)}>
+                                    <option value="">-- Select Topic --</option>
+                                    <option value="general">General News</option>
+                                    <option value="tournaments">Tournaments</option>
+                                    <option value="strategy">Strategy</option>
+                                    <option value="openings">Openings</option>
+                                    <option value="grandmasters">Grandmasters</option>
+                                    <option value="world-championship">World Championship</option>
+                                </select>
+                            </div>
+
+                            <div className="news-search">
+                                <label>Or Search:</label>
+                                <input
+                                    type="text"
+                                    placeholder="e.g., Magnus Carlsen, Sicilian Defense..."
+                                    value={customSearch}
+                                    onChange={(e) => handleSearchChange(e.target.value)}
+                                    className="news-search-input"
+                                />
+                                {debouncedSearch && debouncedSearch !== customSearch && (
+                                    <span className="search-loading">Searching...</span>
+                                )}
+                            </div>
                         </div>
 
                         {loadingNews ? (

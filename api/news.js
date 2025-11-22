@@ -18,10 +18,14 @@ export default async function handler(req, res) {
         const TOPIC_QUERIES = {
             general: 'chess OR "chess game" OR grandmaster',
             tournaments: 'chess tournament OR "chess championship" OR FIDE',
-            strategy: 'chess strategy OR "chess opening" OR "chess tactics" OR "chess endgame"'
+            strategy: 'chess strategy OR "chess opening" OR "chess tactics" OR "chess endgame"',
+            openings: 'chess openings OR "chess theory" OR "opening preparation"',
+            grandmasters: 'chess grandmaster OR "GM" OR "super GM"',
+            'world-championship': 'world chess championship OR "FIDE world championship"'
         };
 
-        const query = TOPIC_QUERIES[topic.toLowerCase()] || TOPIC_QUERIES.general;
+        // Use predefined query if it exists, otherwise use the topic directly as a search term
+        const query = TOPIC_QUERIES[topic.toLowerCase()] || `chess ${topic}`;
 
         // Get articles from the last 30 days
         const thirtyDaysAgo = new Date();
