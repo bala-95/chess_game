@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Chess } from 'chess.js';
 import { Board } from './components/Board';
-import { RotateCcw, ArrowLeftRight, Bot, User, Hash, LogOut } from 'lucide-react';
+import { RotateCcw, ArrowLeftRight, Bot, User, Hash, LogOut, Newspaper } from 'lucide-react';
+import { NewsPane } from './components/News/NewsPane';
 import { getBestMove, setSeed } from './ai/Engine';
 import { useAuth } from './contexts/AuthContext';
 import { Login } from './components/Auth/Login';
@@ -23,6 +24,7 @@ function App() {
   const [seed, setSeedState] = useState(123456789);
   const [showSignup, setShowSignup] = useState(false);
   const [statsKey, setStatsKey] = useState(0); // Force stats refresh
+  const [isNewsPaneOpen, setIsNewsPaneOpen] = useState(false);
   const { user, loading, signOut } = useAuth();
 
   // Sound effects (optional, maybe later)
@@ -219,6 +221,13 @@ function App() {
               <button onClick={signOut} title="Sign Out" className="signout-button">
                 <LogOut size={20} /> Sign Out
               </button>
+              <button
+                onClick={() => setIsNewsPaneOpen(true)}
+                title="News & AI"
+                className={isNewsPaneOpen ? 'active-mode' : ''}
+              >
+                <Newspaper size={20} /> News & AI
+              </button>
               {gameMode === 'PvAI' && (
                 <>
                   <div className="difficulty-selector">
@@ -272,6 +281,7 @@ function App() {
           </div>
         </div>
       </div>
+      <NewsPane isOpen={isNewsPaneOpen} onClose={() => setIsNewsPaneOpen(false)} />
     </div>
   );
 }
