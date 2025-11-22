@@ -16,7 +16,8 @@ Visit: [vercel.com/new](https://vercel.com/new)
 ```
 VITE_SUPABASE_URL = https://ispqbkclerzqebypaial.supabase.co
 VITE_SUPABASE_ANON_KEY = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlzcHFia2NsZXJ6cWVieXBhaWFsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjM2ODc0OTAsImV4cCI6MjA3OTI2MzQ5MH0.fkv6ioRXkj-SRc2DHTNbHp1fvxns88SWZSjBPZrYyR0
-GEMINI_API_KEY = AQ.Ab8RN6LoU4Tgpy178iUGR_8YxkzGGKvFPrul40zzMI5Imhhq3A
+GEMINI_API_KEY = AIzaSyCIaTKKQdWBIcUou4ejFOVnVbl3QLr8qRA
+NEWS_API_KEY = 4e4cd13134ac4c17b9229352da68b284
 ```
 
 **Settings**:
